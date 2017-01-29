@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Citizen <%= userId %> </title>
+    <!-- Load socket.io client library -->
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Load JQuery from a CDN -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+	
+</head>
+<body data-userId="<%= userId %>">
+	<button onclick="requestForHelp()">
+    	Request for help
+	</button>
+	<script type="text/javascript">
+	    var socket = io();
+
+	    //Fetch userId from the data-atribute of the body tag
+	    var userId = document.body.getAttribute("data-userId");
+
+	    /*Fire a 'join' event and send your userId to the server, to join a room - room-name will be the userId itself!
+	*/ 
+	    socket.emit('join', {userId: userId});
+
+		//Declare variables, this will be used later
+	    var requestDetails = {};
+	    var copDetails = {};
+	    var map, marker;
+
+
+
+		//When button is clicked, fire request-for-help and send citizen's userId and location
+		function requestForHelp(){
+			//Citizen's info
+			var userId = document.body.getAttribute("data-userId");
+			requestDetails = {
+			    citizenId: userId,
+			    location: {
+			        address: "Indiranagar, Bengaluru, Karnataka 560038, India",
+			        latitude: 12.9718915,
+			        longitude: 77.64115449999997
+			    }
+			}
+			
+		    socket.emit("request-for-help", requestDetails);
+		}
+
+	</script>
+</body>

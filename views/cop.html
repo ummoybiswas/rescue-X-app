@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Citizen <%= userId %> </title>
+    <!-- Load socket.io client library -->
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Load JQuery from a CDN -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
+</head>
+<body data-userId="<%= userId %>">
+    <h1>Hello COP <%= userId %></h1>
+
+    <h4 id="notification"> 
+        <!-- Some info will be displayed here-->
+    </h4>
+    <div id="copDetails"> 
+        <!-- We will load a map here later-->
+    </div>
+    <div id="map"> 
+        <!-- We will load a map here later-->
+    </div>
+
+    <!--Load JavaScripts -->
+    <script type="text/javascript">
+    	//First send a GET request using JQuery AJAX and get the cop's details and save it
+		$.ajax({
+		    url: "/cops/info?userId=<%= userId %>",
+		    type: "GET",
+		    dataType: "json",
+		    success: function(data){ //Once response is successful
+		        copDetails = data.copDetails; //Save the cop details
+		        copDetails.location = {
+		            address: copDetails.location.address,
+		            longitude: copDetails.location.coordinates[0],
+		            latitude: copDetails.location.coordinates[1] 
+		        };
+		        document.getElementById("copDetails").innerHTML = JSON.stringify(data.copDetails);
+		    },
+		    error: function(httpRequest, status, error){
+		        console.log(error);
+		    }
+		});
+		 var socket = io();
+    	//Fetch userId from the data-atribute of the body tag
+   		 var userId = document.body.getAttribute("data-userId");
+   		 /*Fire a 'join' event and send your userId to the server, to join a room - room-name will be the userId itself!*/ 
+   		 socket.emit('join', {userId: userId});
+		
+		//Listen for a "request-for-help" event
+		socket.on("request-for-help", function(eventData){
+		    //Once request is received, do this:
+		    //Save request details
+		    requestDetails = eventData; //Contains info of citizen
+
+		    //display the data received from the event
+		    document.getElementById("notification").innerHTML = "Someone's being attacked by a wildling! \n" + JSON.stringify(requestDetails);
+		});
+    </script>
+</body>
+</html>

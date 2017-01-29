@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Citizen <%= userId %> </title>
+
+    <!-- Load socket.io client library -->
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Load JQuery from a CDN -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- load libraries before your JS code
+	Write rest of your JS code here -->
+
+	<script type="text/javascript">
+	    var socket = io();
+
+	    //Fetch userId from the data-atribute of the body tag
+	    var userId = document.body.getAttribute("data-userId");
+
+	    /*Fire a 'join' event and send your userId to the server, to join a room - room-name will be the userId itself!
+	*/ 
+	    socket.emit('join', {userId: userId});
+
+	//Declare variables, this will be used later
+	    var requestDetails = {};
+	    var copDetails = {};
+	    var map, marker;
+
+	</script>
+
+</head>
+<body data-userId="<%= userId %>">
+    <h1>Hello Citizen <%= userId %></h1>
+
+    <h4 id="notification"> 
+        <!-- Some info will be displayed here-->
+    </h4>
+
+    <div id="map"> 
+        <!-- We will load a map here later-->
+    </div>
+
+    <!--Load JavaScripts -->
+</body>
+</html>

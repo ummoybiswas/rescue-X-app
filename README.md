@@ -1,4 +1,4 @@
-# rescue-X-app
+# rescue-X-app [<b>PROJECT IS ONGOING</b>]
 This project is aim to build a citizen-cop app that can help your friends in times of trouble!
 <p>
 Featues of this app:
@@ -22,8 +22,6 @@ application.</li>
 <li><a href="https://github.com/expressjs/body-parser">body-parser</a> parses incoming request
 bodies in a middleware before your handlers, available under the <em>req.body</em>
 property. You need this so you can handle POST requests.</li>
-<li><a href="http://underscorejs.org/">underscore</a> makes writing JavaScript simpler. Feel
-free to use another library if you prefer.</li>
 <li><a href="http://socket.io/">socket.io</a> lets you use web sockets within your Node
 application.</li>
 <li><a href="https://www.npmjs.com/package/mongodb">mongodb</a> is the official NodeJS driver
